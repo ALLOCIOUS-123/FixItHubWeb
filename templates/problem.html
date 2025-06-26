@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block content %}
+<a href="{{ url_for('index') }}" class="btn btn-secondary mb-3">← Back</a>
+
+<h3>{{ problem.title }}</h3>
+<p>{{ problem.description }}</p>
+
+<h5 class="mt-4">💡 Solutions</h5>
+<ul class="list-group mb-3">
+    {% for s in problem.solutions %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        {{ s.text }}
+        <span>
+            <a href="{{ url_for('vote_solution', pid=pid, sid=loop.index0) }}" class="btn btn-sm btn-outline-success">
+                👍 {{ s.votes }}
+            </a>
+        </span>
+    </li>
+    {% else %}
+    <li class="list-group-item">No solutions yet. Be the first to solve it!</li>
+    {% endfor %}
+</ul>
+
+<form action="{{ url_for('add_solution', pid=pid) }}" method="post">
+    <textarea name="solution" class="form-control mb-2" placeholder="Suggest a solution..." required></textarea>
+    <button type="submit" class="btn btn-success">Submit Solution</button>
+</form>
+{% endblock %}

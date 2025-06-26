@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block content %}
+<form action="/add" method="post" class="mb-4">
+    <div class="mb-2">
+        <input type="text" name="title" class="form-control" placeholder="Problem Title" required>
+    </div>
+    <div class="mb-2">
+        <textarea name="description" class="form-control" placeholder="Describe the problem" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Post Problem</button>
+</form>
+
+<h3>Open Problems</h3>
+<ul class="list-group">
+    {% for p in problems %}
+    <li class="list-group-item">
+        <a href="{{ url_for('view_problem', pid=loop.index0) }}">
+            <strong>{{ p.title }}</strong>: {{ p.description }}
+        </a>
+    </li>
+    {% else %}
+    <li class="list-group-item">No problems posted yet.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
