@@ -16,9 +16,12 @@ echo "Creating directories..."
 mkdir -p instance
 mkdir -p static
 mkdir -p templates
+mkdir -p migrations
 
 # Initialize database
 echo "Initializing database..."
+flask db init || true
+flask db migrate -m "Initial migration" || true
 flask db upgrade
 
 # Set proper permissions
@@ -26,6 +29,7 @@ echo "Setting permissions..."
 chmod -R 755 instance
 chmod -R 755 static
 chmod -R 755 templates
+chmod -R 755 migrations
 
 # Clean up
 echo "Cleaning up..."
