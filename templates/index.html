@@ -1,25 +1,39 @@
-{% extends "layout.html" %}
+{% extends "base.html" %}
 {% block content %}
-<form action="/add" method="post" class="mb-4">
-    <div class="mb-2">
-        <input type="text" name="title" class="form-control" placeholder="Problem Title" required>
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title">Post a New Problem</h5>
+        <div class="mb-3">
+            <input type="text" id="problem-title" class="form-control" placeholder="Problem Title" required>
+        </div>
+        <div class="mb-3">
+            <textarea id="problem-description" class="form-control" rows="3" placeholder="Describe the problem" required></textarea>
+        </div>
+        <button onclick="createProblem()" class="btn btn-primary">Post Problem</button>
     </div>
-    <div class="mb-2">
-        <textarea name="description" class="form-control" placeholder="Describe the problem" required></textarea>
-    </div>
-    <button type="submit" class="btn btn-primary">Post Problem</button>
-</form>
+</div>
 
-<h3>Open Problems</h3>
-<ul class="list-group">
-    {% for p in problems %}
-    <li class="list-group-item">
-        <a href="{{ url_for('view_problem', pid=loop.index0) }}">
-            <strong>{{ p.title }}</strong>: {{ p.description }}
-        </a>
-    </li>
-    {% else %}
-    <li class="list-group-item">No problems posted yet.</li>
-    {% endfor %}
-</ul>
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Recent Problems</h5>
+        {% if problems %}
+        <div class="list-group">
+            {% for problem in problems %}
+            <div class="list-group-item">
+                <h6 class="mb-1">{{ problem.title }}</h6>
+                <p class="mb-1">{{ problem.description }}</p>
+                <small class="text-muted">Posted {{ problem.created_at.strftime("%Y-%m-%d, %H:%M") }}</small>
+                <div class="mt-2">
+                    <a href="{{ url_for('view_problem', problem_id=problem.id) }}" class="btn btn-sm btn-primary">
+                        View Solutions
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-muted">No problems posted yet.</p>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}

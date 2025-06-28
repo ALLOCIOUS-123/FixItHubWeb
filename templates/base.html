@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FixItHub - Problem Solving Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">FixItHub</a>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        {% block content %}{% endblock %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function createProblem() {
+            const title = $('#problem-title').val();
+            const description = $('#problem-description').val();
+            
+            if (!title || !description) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            $.ajax({
+                url: '/api/problems',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ title, description }),
+                success: function(response) {
+                    window.location.reload();
+                },
+                error: function(xhr) {
+                    alert('Error creating problem: ' + xhr.responseJSON.error);
+                }
+            });
+        }
+
+        function addSolution(problemId) {
+            const solutionText = $('#solution-text-' + problemId).val();
+            
+            if (!solutionText) {
+                alert('Please enter a solution');
+                return;
+            }
+
+            $.ajax({
+                url: `/api/problems/${problemId}/solutions`,
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ text: solutionText }),
+                success: function(response) {
+                    window.location.reload();
+                },
+                error: function(xhr) {
+                    alert('Error adding solution: ' + xhr.responseJSON.error);
+                }
+            });
+        }
+
+        function voteSolution(solutionId) {
+            $.ajax({
+                url: `/api/problems/solutions/${solutionId}/vote`,
+                method: 'POST',
+                success: function(response) {
+                    $(`#votes-${solutionId}`).text(response.votes);
+                },
+                error: function(xhr) {
+                    alert('Error voting: ' + xhr.responseJSON.error);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
