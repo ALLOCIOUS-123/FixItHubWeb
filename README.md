@@ -2,6 +2,12 @@
 
 A web application for tracking and solving problems.
 
+## Clone repository
+
+```bash
+git clone https://github.com/ALLOCIOUS-123/FixItHubWeb.git
+```
+
 ## Setup
 
 1. Clone the repository
@@ -35,10 +41,7 @@ A web application for tracking and solving problems.
    ```bash
    pip install -r requirements.txt
    ```
-4. Copy .env.example to .env and update the values:
-   ```bash
-   copy .env.example .env
-   ```
+4. Create .env with contents of .env.example:
 5. Run the application:
    ```bash
    $env:FLASK_APP = "app.py"
