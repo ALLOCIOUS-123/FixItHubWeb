@@ -23,6 +23,29 @@ A web application for tracking and solving problems.
    python app.py
    ```
 
+## Windows setup
+1. Clone the repository
+2. Create a virtual environment:
+   ```bash
+   python -m venv venv
+   Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+   .\venv\Scripts\Activate.ps1
+   ```
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. Copy .env.example to .env and update the values:
+   ```bash
+   copy .env.example .env
+   ```
+5. Run the application:
+   ```bash
+   $env:FLASK_APP = "app.py"
+   $env:FLASK_ENV = "development"
+   flask run
+```
+
 ## Environment Variables
 
 - `FLASK_APP`: Path to the Flask application (default: app.py)
